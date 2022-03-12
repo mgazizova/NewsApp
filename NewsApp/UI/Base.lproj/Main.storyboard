@@ -23,29 +23,19 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="vN2-kD-Fbx">
-                                <rect key="frame" x="20" y="119" width="374" height="743"/>
+                                <rect key="frame" x="10" y="119" width="394" height="743"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                                <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="NewsCell" id="pRe-DG-9fm">
-                                        <rect key="frame" x="0.0" y="44.5" width="374" height="43.5"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="pRe-DG-9fm" id="1kz-fS-no4">
-                                            <rect key="frame" x="0.0" y="0.0" width="374" height="43.5"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                        </tableViewCellContentView>
-                                    </tableViewCell>
-                                </prototypes>
                             </tableView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="vN2-kD-Fbx" secondAttribute="trailing" constant="20" id="0cl-n7-C12"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="vN2-kD-Fbx" secondAttribute="trailing" constant="10" id="0cl-n7-C12"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="vN2-kD-Fbx" secondAttribute="bottom" id="5gx-2x-jWI"/>
                             <constraint firstItem="bDm-dm-0kY" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="9h3-Uv-Hy1"/>
                             <constraint firstItem="bDm-dm-0kY" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="20" id="H5B-Lm-G0P"/>
                             <constraint firstItem="vN2-kD-Fbx" firstAttribute="top" secondItem="bDm-dm-0kY" secondAttribute="bottom" constant="19" id="aBz-cd-eHK"/>
-                            <constraint firstItem="vN2-kD-Fbx" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="tna-lk-F5w"/>
+                            <constraint firstItem="vN2-kD-Fbx" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="10" id="tna-lk-F5w"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" relation="lessThanOrEqual" secondItem="bDm-dm-0kY" secondAttribute="trailing" constant="205" id="uef-qX-A7N"/>
                         </constraints>
                         <connections>

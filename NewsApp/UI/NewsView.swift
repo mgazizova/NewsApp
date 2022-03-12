@@ -12,6 +12,7 @@ class NewsView: UIView {
     @IBOutlet weak var tableView: UITableView!
     
     func configure() {
-        // configure smth
+        tableView.rowHeight = 300
+        tableView.register(UINib(nibName: "NewsTableViewCell", bundle: nil), forCellReuseIdentifier: "NewsCell")
     }
 }
