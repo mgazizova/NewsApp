@@ -12,21 +12,30 @@ protocol UrlComponents {
     var baseUrl: String { get }
     var path: String { get }
     var params: [String: String] { get }
-    //TODO Убрать отсюда, формировать урл в менеджере
-    func fullUrl() -> URL
+    var fullUrl: URL? { get }
 }
-//TODO Тоже не понадобится
+
+extension URLComponents {
+    mutating func setQueryItems(with parameters: [String: String]) {
+        self.queryItems = parameters.map { URLQueryItem(name: $0.key, value: $0.value) }
+    }
+}
+
 extension UrlComponents {
-    func fullUrl() -> URL {
-        let queryParams = params.map { "\($0.key)=\($0.value)" }.joined(separator: "&")
+    var fullUrl: URL? {
+        guard let url = URL(string: baseUrl) else { return nil }
         
-        return URL(string: "\(baseUrl)\(path)?\(queryParams)")!
+        var components = URLComponents(url: url, resolvingAgainstBaseURL: false)
+        components?.path = path
+        components?.setQueryItems(with: params)
+
+        return components?.url
     }
 }
 
 enum NewsEndPoint {
-    case teslaNewsForToday
-    case appleNewsForToday
+    case teslaNewsForToday(page:Int, pageSize:Int)
+    case appleNewsForToday(page:Int, pageSize:Int)
 }
 
 extension NewsEndPoint: UrlComponents {
@@ -47,23 +56,29 @@ extension NewsEndPoint: UrlComponents {
     var params: [String: String] {
         get {
             switch self {
-            case .teslaNewsForToday:
+            case let .teslaNewsForToday(page, pageSize):
                 let formatter = DateFormatter()
                 formatter.dateFormat = "yyyy-MM-dd"
                 return [
                     "q": "tesla",
                     "apiKey": "687e62c563ac4342959cf12264aabeed",
                     "sortBy": "publishedAt",
-                    "from": formatter.string(from: Date())
+                    "from": formatter.string(from: Date()),
+                    "page": "\(page)",
+                    "pageSize": "\(pageSize)",
+                    "language": "en"
                 ]
-            case .appleNewsForToday:
+            case let .appleNewsForToday(page, pageSize):
                 let formatter = DateFormatter()
                 formatter.dateFormat = "yyyy-MM-dd"
                 return [
                     "q": "apple",
                     "apiKey": "687e62c563ac4342959cf12264aabeed",
                     "sortBy": "popularity",
-                    "from": formatter.string(from: Date())
+                    "from": formatter.string(from: Date()),
+                    "page": "\(page)",
+                    "pageSize": "\(pageSize)",
+                    "language": "en"
                 ]
             }
         }

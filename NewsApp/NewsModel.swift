@@ -15,5 +15,8 @@ struct NewsModel: Decodable {
 }
 
 struct NewsGroup: Decodable {
-    let articles: [NewsModel]
+    var totalResults: Int?
+    let status: String?
+    let message: String?
+    var articles: [NewsModel]?
 }

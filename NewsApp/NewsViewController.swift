@@ -10,8 +10,19 @@ import Kingfisher
 import SafariServices
 
 class NewsViewController: UIViewController {
-    private var newsForToday: NewsGroup?
+    private var newsForToday: [NewsModel] = []
     private let newsManager = NewsApiManager()
+    
+    // for pagination
+    private var isDataLoading = false
+    private var pageNumber = 1
+    private let pageSize = 10
+    private var totalResult: Int?
+    private var didLoadAllNews = false {
+        didSet {
+            didLoadAllNews ? newsView.stopActivityIndicator() : newsView.startActivityIndicator()
+        }
+    }
     
     private var newsView: NewsView! {
         guard isViewLoaded else { return nil }
@@ -22,64 +33,93 @@ class NewsViewController: UIViewController {
         super.viewDidLoad()
         
         configure()
-        newsManager.fetchNews(completion: handleNewsResult)
-    }
-    
-    func handleNewsResult(result: Result<NewsGroup, Error>) {
-        switch result {
-        case .success(let news):
-            newsForToday = news
-            DispatchQueue.main.async {
-                self.newsView.tableView.reloadData()
-            }
-        case .failure(let error):
-            let alert = UIAlertController(title: "Error", message: error.localizedDescription, preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "Ok", style: .default))
-            alert.addAction(UIAlertAction(title: "Try again", style: .default) {(action) -> Void in
-                self.newsManager.fetchNews(completion: self.handleNewsResult)
-            })
-            
-            DispatchQueue.main.async {
-                self.present(alert, animated: true, completion: nil)
-            }
+        newsView.startActivityIndicator()
+
+        newsManager.fetchNews(pageNumber: pageNumber, pageSize: pageSize) { [weak self] result in
+            self?.handleNewsResult(result: result)
         }
     }
-}
-
-extension NewsViewController {
-    func configure() {
+    
+    private func configure() {
         newsView.tableView.delegate = self
         newsView.tableView.dataSource = self
         newsView.configure()
     }
+    
+    private func handleNewsResult(result: Result<NewsGroup, CustomError>) { 
+        switch result {
+        case .success(let news):
+            newsForToday.append(contentsOf: news.articles ?? [])
+            totalResult = news.totalResults
+            if let totalResult = totalResult,
+               totalResult <= newsForToday.count {
+                didLoadAllNews = true
+            }
+
+            DispatchQueue.main.async {
+                self.newsView.tableView.reloadData()
+            }
+        case .failure(let error):
+            showAlert(error: error)
+        }
+    }
+    
+    private func showAlert(error: CustomError) {
+        let alert = UIAlertController(title: "Error", message: error.errorDescription, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Ok", style: .default))
+        alert.addAction(UIAlertAction(title: "Try again", style: .default) {(action) -> Void in
+            self.newsManager.fetchNews(pageNumber: self.pageNumber, pageSize: self.pageSize) { [weak self] result in
+                self?.handleNewsResult(result: result)
+            }
+        })
+        
+        DispatchQueue.main.async {
+            self.present(alert, animated: true, completion: nil)
+        }
+    }
 }
 
-extension NewsViewController: UITableViewDelegate, UITableViewDataSource {
+extension NewsViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        guard let news = newsForToday else { return 0 }
-        
-        return news.articles.count
+        return newsForToday.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "NewsCell") as? NewsTableViewCell else { return UITableViewCell()}
-        guard let news = newsForToday else { return cell }
-        
-        cell.configure(withText: news.articles[indexPath.row].title, byAuthor: news.articles[indexPath.row].author ?? "")
-        
-        if let urlToImage = news.articles[indexPath.row].urlToImage, let url = URL(string: urlToImage) {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "NewsCell") as? NewsTableViewCell else { return UITableViewCell() }
+
+        cell.configure(withText: newsForToday[indexPath.row].title, byAuthor: newsForToday[indexPath.row].author ?? "")
+
+        if let urlToImage = newsForToday[indexPath.row].urlToImage, let url = URL(string: urlToImage) {
             cell.newsImage.kf.setImage(with: url)
         }
         return cell
     }
-}
-
-extension NewsViewController: SFSafariViewControllerDelegate {
+    
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        if !didLoadAllNews {
+            newsView.startActivityIndicator()
+        }
+    }
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard let news = newsForToday, let url = URL(string: news.articles[indexPath.row].url) else { return () }
-        
+        guard let url = URL(string: newsForToday[indexPath.row].url) else { return () }
+
         let svc = SFSafariViewController(url: url)
         present(svc, animated: true, completion: nil)
-        svc.delegate = self
+    }
+}
+
+extension NewsViewController: UITableViewDelegate {
+    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        isDataLoading = false
+    }
+    
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        if ((newsView.tableView.contentOffset.y + newsView.tableView.frame.size.height) >= newsView.tableView.contentSize.height), !isDataLoading {
+            isDataLoading = true
+            pageNumber = pageNumber + 1
+            
+            newsManager.fetchNews(pageNumber: pageNumber, pageSize: pageSize, completion: handleNewsResult)
+        }
     }
 }

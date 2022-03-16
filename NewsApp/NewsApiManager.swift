@@ -6,22 +6,24 @@
 //
 
 import Foundation
-import SwiftUI
 
-enum PosibleErrors: Error {
-    case decodingError
-    case restError
-    case otherError
+enum CustomError: Error {
+    case decoding
+    case restAPI
+    case lostConnection
+    case unknown
 }
 
-extension PosibleErrors: LocalizedError {
-    public var localizedDescription: String? {
+extension CustomError: LocalizedError {
+    public var errorDescription: String? {
         switch self {
-        case .decodingError:
+        case .decoding:
             return "Sorry. Format of news is unknown"
-        case .restError:
+        case .restAPI:
             return "Service is temporarily unavailable. Try later"
-        case .otherError:
+        case .lostConnection:
+            return "Internet connection is lost. Please check your connection"
+        case .unknown:
             return "Something went wrong. Try again"
         }
     }
@@ -29,31 +31,45 @@ extension PosibleErrors: LocalizedError {
 
 class NewsApiManager {
             
-    typealias Handler = (Result<NewsGroup, Error>) -> Void
+    typealias Handler = (Result<NewsGroup, CustomError>) -> Void
 
-    func fetchNews(completion: @escaping Handler) {
-        
-        var request = URLRequest(url: NewsEndPoint.appleNewsForToday.fullUrl())
+    func fetchNews(pageNumber: Int?, pageSize: Int?, completion: @escaping Handler) {
+        guard let pageNumber = pageNumber,
+              let pageSize = pageSize,
+              let url = NewsEndPoint.appleNewsForToday(page: pageNumber, pageSize: pageSize).fullUrl else {
+                  completion(.failure(CustomError.unknown))
+                  return
+              }
+
+        var request = URLRequest(url: url)
         request.httpMethod = "GET"
         
         let session = URLSession.shared
         session.dataTask(with: request, completionHandler: { data, response, error -> Void in
-            if let error = error { completion(.failure(error)) }
-            
             do {
+                if let error = error { throw error }
+                
                 if let data = data {
                     let currentNews: NewsGroup = try JSONDecoder().decode(NewsGroup.self, from: data)
+                    
+                    guard currentNews.status != "error" else {
+                        completion(.failure(CustomError.unknown))
+                        return
+                    }
+
                     completion(.success(currentNews))
                 }
             }
-            catch let error as NSError{
+            catch let error as NSError {
                 switch error.code {
                 case 4865:
-                    completion(.failure(PosibleErrors.decodingError))
+                    completion(.failure(CustomError.decoding))
                 case 4864:
-                    completion(.failure(PosibleErrors.restError))
+                    completion(.failure(CustomError.restAPI))
+                case -1009:
+                    completion(.failure(CustomError.lostConnection))
                 default:
-                    completion(.failure(PosibleErrors.otherError))
+                    completion(.failure(CustomError.unknown))
                 }
             }
         }).resume()
