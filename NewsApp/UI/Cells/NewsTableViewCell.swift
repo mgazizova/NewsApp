@@ -24,12 +24,10 @@ class NewsTableViewCell: UITableViewCell {
         author.font = UIFont(name: "AppleSDGothicNeo-Light", size: 20)
         author.textAlignment = .right
         
-        newsImage.alpha = 0.5
+        newsImage.alpha = 0.8
         
         contentView.bringSubviewToFront(title)
         contentView.bringSubviewToFront(author)
         contentView.layer.cornerRadius = 10
-        layer.borderWidth = 1
-        layer.borderColor = UIColor.white.cgColor
     }
 }
