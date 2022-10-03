@@ -17,13 +17,13 @@ class NewsTableViewCell: UITableViewCell {
         title.textColor = .white
         title.backgroundColor = .clear
         title.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 25)
-       
+
         author.text = byAuthor
         author.textColor = .white
         author.backgroundColor = .clear
         author.font = UIFont(name: "AppleSDGothicNeo-Light", size: 20)
         author.textAlignment = .right
-        
+
         newsImage.alpha = 0.8
 
         contentView.backgroundColor = .black
@@ -31,7 +31,7 @@ class NewsTableViewCell: UITableViewCell {
         contentView.bringSubviewToFront(author)
         contentView.layer.cornerRadius = 10
     }
-    
+
     override func layoutSubviews() {
         super.layoutSubviews()
 

@@ -14,7 +14,6 @@
 		1171A59F27CF494900E0DEE5 /* NewsApp.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 1171A59D27CF494900E0DEE5 /* NewsApp.xcdatamodeld */; };
 		1171A5A127CF494900E0DEE5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1171A5A027CF494900E0DEE5 /* Assets.xcassets */; };
 		1171A5A427CF494900E0DEE5 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1171A5A227CF494900E0DEE5 /* LaunchScreen.storyboard */; };
-		1171A5AC27CF7E4900E0DEE5 /* NewsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1171A5AB27CF7E4900E0DEE5 /* NewsView.swift */; };
 		1171A5AE27CF7E5000E0DEE5 /* NewsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1171A5AD27CF7E5000E0DEE5 /* NewsModel.swift */; };
 		1171A5B527DA17FB00E0DEE5 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 1171A5B427DA17FB00E0DEE5 /* Kingfisher */; };
 		1171A5B927DA1DD300E0DEE5 /* NewsTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1171A5B827DA1DD300E0DEE5 /* NewsTableViewCell.xib */; };
@@ -33,7 +32,6 @@
 		1171A5A027CF494900E0DEE5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		1171A5A327CF494900E0DEE5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		1171A5A527CF494900E0DEE5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		1171A5AB27CF7E4900E0DEE5 /* NewsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsView.swift; sourceTree = "<group>"; };
 		1171A5AD27CF7E5000E0DEE5 /* NewsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsModel.swift; sourceTree = "<group>"; };
 		1171A5B827DA1DD300E0DEE5 /* NewsTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NewsTableViewCell.xib; sourceTree = "<group>"; };
 		1171A5BA27DA1E0A00E0DEE5 /* NewsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsTableViewCell.swift; sourceTree = "<group>"; };
@@ -91,7 +89,6 @@
 			isa = PBXGroup;
 			children = (
 				1171A59A27CF494900E0DEE5 /* Main.storyboard */,
-				1171A5AB27CF7E4900E0DEE5 /* NewsView.swift */,
 				1171A5B727DA1DAA00E0DEE5 /* Cells */,
 			);
 			path = UI;
@@ -116,6 +113,7 @@
 				1171A58D27CF494900E0DEE5 /* Sources */,
 				1171A58E27CF494900E0DEE5 /* Frameworks */,
 				1171A58F27CF494900E0DEE5 /* Resources */,
+				1102FD0628EB0EB700F9CCE0 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -179,6 +177,26 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		1102FD0628EB0EB700F9CCE0 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "export PATH=\"$PATH:/opt/homebrew/bin\"\nif which swiftlint >/dev/null; then\n    swiftlint\nelse\n    echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		1171A58D27CF494900E0DEE5 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -191,7 +209,6 @@
 				1171A5BB27DA1E0A00E0DEE5 /* NewsTableViewCell.swift in Sources */,
 				1171A59527CF494900E0DEE5 /* AppDelegate.swift in Sources */,
 				1171A59F27CF494900E0DEE5 /* NewsApp.xcdatamodeld in Sources */,
-				1171A5AC27CF7E4900E0DEE5 /* NewsView.swift in Sources */,
 				1171A59727CF494900E0DEE5 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

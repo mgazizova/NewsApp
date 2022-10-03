@@ -30,7 +30,7 @@ extension CustomError: LocalizedError {
 }
 
 class NewsApiManager {
-            
+
     typealias Handler = (Result<NewsGroup, CustomError>) -> Void
 
     func fetchNews(pageNumber: Int?, pageSize: Int?, completion: @escaping Handler) {
@@ -43,15 +43,15 @@ class NewsApiManager {
 
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
-        
+
         let session = URLSession.shared
-        session.dataTask(with: request, completionHandler: { data, response, error -> Void in
+        session.dataTask(with: request, completionHandler: { data, _, error -> Void in
             do {
                 if let error = error { throw error }
-                
+
                 if let data = data {
                     let currentNews: NewsGroup = try JSONDecoder().decode(NewsGroup.self, from: data)
-                    
+
                     guard currentNews.status != "error" else {
                         completion(.failure(CustomError.unknown))
                         return
@@ -59,8 +59,7 @@ class NewsApiManager {
 
                     completion(.success(currentNews))
                 }
-            }
-            catch let error as NSError {
+            } catch let error as NSError {
                 switch error.code {
                 case 4865:
                     completion(.failure(CustomError.decoding))

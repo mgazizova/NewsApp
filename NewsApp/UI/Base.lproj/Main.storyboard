@@ -12,7 +12,7 @@
         <scene sceneID="tne-QT-ifu">
             <objects>
                 <viewController id="BYZ-38-t0r" customClass="NewsViewController" customModule="NewsApp" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC" customClass="NewsView" customModule="NewsApp" customModuleProvider="target">
+                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
@@ -38,11 +38,11 @@
                             <constraint firstItem="vN2-kD-Fbx" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="10" id="tna-lk-F5w"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" relation="lessThanOrEqual" secondItem="bDm-dm-0kY" secondAttribute="trailing" constant="205" id="uef-qX-A7N"/>
                         </constraints>
-                        <connections>
-                            <outlet property="tableLabel" destination="bDm-dm-0kY" id="oEc-dp-57E"/>
-                            <outlet property="tableView" destination="vN2-kD-Fbx" id="u7B-fd-II6"/>
-                        </connections>
                     </view>
+                    <connections>
+                        <outlet property="tableLabel" destination="bDm-dm-0kY" id="cce-eg-0Ze"/>
+                        <outlet property="tableView" destination="vN2-kD-Fbx" id="SQe-5y-MTu"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>

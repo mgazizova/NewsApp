@@ -24,7 +24,7 @@ extension URLComponents {
 extension UrlComponents {
     var fullUrl: URL? {
         guard let url = URL(string: baseUrl) else { return nil }
-        
+
         var components = URLComponents(url: url, resolvingAgainstBaseURL: false)
         components?.path = path
         components?.setQueryItems(with: params)
@@ -34,8 +34,8 @@ extension UrlComponents {
 }
 
 enum NewsEndPoint {
-    case teslaNewsForToday(page:Int, pageSize:Int)
-    case appleNewsForToday(page:Int, pageSize:Int)
+    case teslaNewsForToday(page: Int, pageSize: Int)
+    case appleNewsForToday(page: Int, pageSize: Int)
 }
 
 extension NewsEndPoint: UrlComponents {
@@ -45,42 +45,40 @@ extension NewsEndPoint: UrlComponents {
             return "https://newsapi.org"
         }
     }
-    
+
     var path: String {
         switch self {
         case .teslaNewsForToday, .appleNewsForToday:
             return "/v2/everything"
         }
     }
-    
+
     var params: [String: String] {
-        get {
-            switch self {
-            case let .teslaNewsForToday(page, pageSize):
-                let formatter = DateFormatter()
-                formatter.dateFormat = "yyyy-MM-dd"
-                return [
-                    "q": "tesla",
-                    "apiKey": "687e62c563ac4342959cf12264aabeed",
-                    "sortBy": "publishedAt",
-                    "from": formatter.string(from: Date()),
-                    "page": "\(page)",
-                    "pageSize": "\(pageSize)",
-                    "language": "en"
-                ]
-            case let .appleNewsForToday(page, pageSize):
-                let formatter = DateFormatter()
-                formatter.dateFormat = "yyyy-MM-dd"
-                return [
-                    "q": "apple",
-                    "apiKey": "687e62c563ac4342959cf12264aabeed",
-                    "sortBy": "popularity",
-                    "from": formatter.string(from: Date()),
-                    "page": "\(page)",
-                    "pageSize": "\(pageSize)",
-                    "language": "en"
-                ]
-            }
+        switch self {
+        case let .teslaNewsForToday(page, pageSize):
+            let formatter = DateFormatter()
+            formatter.dateFormat = "yyyy-MM-dd"
+            return [
+                "q": "tesla",
+                "apiKey": "687e62c563ac4342959cf12264aabeed",
+                "sortBy": "publishedAt",
+                "from": formatter.string(from: Date()),
+                "page": "\(page)",
+                "pageSize": "\(pageSize)",
+                "language": "en"
+            ]
+        case let .appleNewsForToday(page, pageSize):
+            let formatter = DateFormatter()
+            formatter.dateFormat = "yyyy-MM-dd"
+            return [
+                "q": "apple",
+                "apiKey": "687e62c563ac4342959cf12264aabeed",
+                "sortBy": "popularity",
+                "from": formatter.string(from: Date()),
+                "page": "\(page)",
+                "pageSize": "\(pageSize)",
+                "language": "en"
+            ]
         }
     }
 }
