@@ -18,11 +18,7 @@ class NewsViewController: UIViewController {
     private var pageNumber = 1
     private let pageSize = 10
     private var totalResult: Int?
-    private var didLoadAllNews = false {
-        didSet {
-            didLoadAllNews ? newsView.stopActivityIndicator() : newsView.startActivityIndicator()
-        }
-    }
+    private var didLoadAllNews = false
     
     private var newsView: NewsView! {
         guard isViewLoaded else { return nil }
@@ -33,8 +29,6 @@ class NewsViewController: UIViewController {
         super.viewDidLoad()
         
         configure()
-        newsView.startActivityIndicator()
-
         newsManager.fetchNews(pageNumber: pageNumber, pageSize: pageSize) { [weak self] result in
             self?.handleNewsResult(result: result)
         }
@@ -58,6 +52,7 @@ class NewsViewController: UIViewController {
 
             DispatchQueue.main.async {
                 self.newsView.tableView.reloadData()
+                self.newsView.stopActivityIndicator()
             }
         case .failure(let error):
             showAlert(error: error)
@@ -95,12 +90,6 @@ extension NewsViewController: UITableViewDataSource {
         return cell
     }
     
-    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        if !didLoadAllNews {
-            newsView.startActivityIndicator()
-        }
-    }
-    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let url = URL(string: newsForToday[indexPath.row].url) else { return () }
 
@@ -114,10 +103,13 @@ extension NewsViewController: UITableViewDelegate {
         isDataLoading = false
     }
     
-    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-        if ((newsView.tableView.contentOffset.y + newsView.tableView.frame.size.height) >= newsView.tableView.contentSize.height), !isDataLoading {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        if (newsView.tableView.contentOffset.y + newsView.tableView.frame.size.height + 100) >= newsView.tableView.contentSize.height,
+            !isDataLoading,
+            !didLoadAllNews {
+            newsView.startActivityIndicator()
             isDataLoading = true
-            pageNumber = pageNumber + 1
+            pageNumber += 1
             
             newsManager.fetchNews(pageNumber: pageNumber, pageSize: pageSize, completion: handleNewsResult)
         }

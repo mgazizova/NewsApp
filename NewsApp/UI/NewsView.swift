@@ -16,17 +16,18 @@ class NewsView: UIView {
     func configure() {
         tableView.rowHeight = 300
         tableView.register(UINib(nibName: "NewsTableViewCell", bundle: nil), forCellReuseIdentifier: "NewsCell")
+        tableView.separatorStyle = .none
         
         activityIndicator = UIActivityIndicatorView(style: .medium)
         activityIndicator.frame = CGRect(x: CGFloat(0), y: CGFloat(20), width: tableView.bounds.width, height: CGFloat(44))
         activityIndicator.hidesWhenStopped = true
         
-        tableView.tableFooterView = activityIndicator
+        startActivityIndicator()
     }
     
     func startActivityIndicator() {
+        tableView.tableFooterView = activityIndicator
         activityIndicator.startAnimating()
-        tableView.tableFooterView?.isHidden = false
     }
     
     func stopActivityIndicator() {

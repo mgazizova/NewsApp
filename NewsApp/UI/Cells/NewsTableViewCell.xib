@@ -24,7 +24,7 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="253" verticalCompressionResistancePriority="753" translatesAutoresizingMaskIntoConstraints="NO" id="6E5-aQ-B7c">
-                        <rect key="frame" x="0.0" y="2" width="491" height="230"/>
+                        <rect key="frame" x="0.0" y="0.0" width="491" height="234"/>
                     </imageView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Wp6-4l-QhB">
                         <rect key="frame" x="20" y="214" width="451" height="0.0"/>
@@ -37,9 +37,9 @@
                 <constraints>
                     <constraint firstAttribute="trailing" secondItem="6E5-aQ-B7c" secondAttribute="trailing" id="1MR-PJ-Ojv"/>
                     <constraint firstItem="Wp6-4l-QhB" firstAttribute="leading" secondItem="6en-ie-1tX" secondAttribute="leading" constant="20" symbolic="YES" id="89D-ul-6Ky"/>
-                    <constraint firstItem="6E5-aQ-B7c" firstAttribute="top" secondItem="6en-ie-1tX" secondAttribute="top" constant="2" id="8BT-Nd-lrR"/>
+                    <constraint firstItem="6E5-aQ-B7c" firstAttribute="top" secondItem="6en-ie-1tX" secondAttribute="top" id="8BT-Nd-lrR"/>
                     <constraint firstItem="Yb9-In-dh1" firstAttribute="top" secondItem="6en-ie-1tX" secondAttribute="top" constant="30" id="FmS-GI-r9I"/>
-                    <constraint firstAttribute="bottom" secondItem="6E5-aQ-B7c" secondAttribute="bottom" constant="2" id="M1W-2T-6TN"/>
+                    <constraint firstAttribute="bottom" secondItem="6E5-aQ-B7c" secondAttribute="bottom" id="M1W-2T-6TN"/>
                     <constraint firstAttribute="trailing" secondItem="Wp6-4l-QhB" secondAttribute="trailing" constant="20" symbolic="YES" id="MBv-CH-V7n"/>
                     <constraint firstItem="6E5-aQ-B7c" firstAttribute="leading" secondItem="6en-ie-1tX" secondAttribute="leading" id="Xag-nV-viz"/>
                     <constraint firstItem="Yb9-In-dh1" firstAttribute="leading" secondItem="6en-ie-1tX" secondAttribute="leading" constant="20" symbolic="YES" id="aSy-UT-exf"/>
